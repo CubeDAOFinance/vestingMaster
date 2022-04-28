@@ -1,8 +1,6 @@
 import { expect } from "chai"
 import { ethers } from "hardhat"
-// import { time } from "@openzeppelin/test-helpers"
-import { advanceTime, duration } from "./utils/time"
-import { logger } from "ethers"
+import { advanceTimeAndBlock, duration } from "./utils/time"
 import { getBignumber, getLatestTimestamp } from "./utils/helper"
 
 const DURATION = 60 * 60 * 24 * 7
@@ -37,9 +35,9 @@ describe("MyVestingMaster", function () {
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber("100").toString())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal("0")
 
-    await advanceTime(duration.seconds(DURATION).toNumber())
+    await advanceTimeAndBlock(duration.seconds(DURATION).toNumber())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(100).toString())
-    expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(0).toString())
+    expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(20).toString())
 
     await this.vestingToken.mint(this.myVestingMaster.address, getBignumber(10).toString())
     await this.myVestingMaster.connect(this.masterChef).lock(this.dev.address, getBignumber(10).toString())
@@ -51,16 +49,16 @@ describe("MyVestingMaster", function () {
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(150).toString())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(20).toString())
 
-    await advanceTime(duration.seconds(DURATION).toNumber())
+    await advanceTimeAndBlock(duration.seconds(DURATION).toNumber())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(150).toString())
-    expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(20).toString())
+    expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(50).toString())
 
     await this.vestingToken.mint(this.myVestingMaster.address, getBignumber(30).toString())
     await this.myVestingMaster.connect(this.masterChef).lock(this.dev.address, getBignumber(30).toString())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(180).toString())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(50).toString())
 
-    await advanceTime(duration.seconds(DURATION).toNumber())
+    await advanceTimeAndBlock(duration.seconds(DURATION).toNumber())
     await this.vestingToken.mint(this.myVestingMaster.address, getBignumber(30).toString())
     await this.myVestingMaster.connect(this.masterChef).lock(this.dev.address, getBignumber(30).toString())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(210).toString())
@@ -71,9 +69,9 @@ describe("MyVestingMaster", function () {
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(0).toString())
     expect((await this.vestingToken.balanceOf(this.dev.address)).toString()).to.equal(getBignumber(86).toString())
 
-    await advanceTime(duration.seconds(DURATION).toNumber())
+    await advanceTimeAndBlock(duration.seconds(DURATION).toNumber())
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(124).toString())
-    expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(0).toString())
+    expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[1]).to.equal(getBignumber(42).toString())
 
     await this.myVestingMaster.connect(this.dev).claim()
     expect((await this.myVestingMaster.getVestingAmount(this.dev.address))[0]).to.equal(getBignumber(82).toString())
