@@ -78,7 +78,7 @@ contract MyVestingMaster is IVestingMaster, ReentrancyGuard, Ownable {
     function lock(
         address account, uint256 amount
     ) external override nonReentrant onlyLocker returns (bool) {
-
+        require(vestingToken.balanceOf(address(this)) >= totalLockedRewards.add(amount),"not enough token");
         updateReward(account);
         uint periodIndex = block.timestamp/period;
         userLockedRewards[account].lockedReward[periodIndex] += amount;
