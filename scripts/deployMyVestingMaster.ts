@@ -30,9 +30,9 @@ async function main() {
   //*/
 
   // mainnet
-  const vestingToken='0x6F8A58be5497c82E129B31E1d9B7604ED9b59451'
-  const masterChef = '0x441e22e8cC8c3cfa14086a78ED130e1841307860'
-  const signer_addr = '0x55f254ee842a890e3f54a8c5f80d63f3e3f2fa8f'
+  const vestingToken='0xa065d69b1B37055261d1e88868920EE51cd2F83f'
+  const masterChef = '0x4bf021bD391e8865531f2D1F717759774F6bd7ac'
+  const signer_addr = '0x32b91460053Bf58F3BB74B958aCE3957513A36A9'
   
   const period = 3600*24*7
   const lockedPeriodAmount = 30
